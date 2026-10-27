@@ -8,7 +8,7 @@ type Props = {
 };
 
 export default function ServoList({ servos, selected, onSelect }: Props) {
-  if (!servos.length) return <div className="empty">아직 수신된 데이터가 없습니다.</div>;
+  if (!servos.length) return <div className="empty">No data received yet.</div>;
   return (
     <div className="servo-list">
       {servos.map((s) => {

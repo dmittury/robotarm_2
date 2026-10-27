@@ -24,30 +24,30 @@ export default function ControlPanel({ servo, commands }: Props) {
         body: JSON.stringify({ servo_id: servo.servo_id, target, speed }),
       });
       const j = await r.json();
-      setMsg(r.ok ? `명령 #${j.command.id} 전송됨 → ${j.command.target}°` : `오류: ${j.error}`);
+      setMsg(r.ok ? `Command #${j.command.id} sent → ${j.command.target}°` : `Error: ${j.error}`);
     } catch (e: any) {
-      setMsg(`오류: ${e.message}`);
+      setMsg(`Error: ${e.message}`);
     } finally {
       setBusy(false);
     }
   }
 
-  if (!servo) return <div className="empty">왼쪽에서 서보를 선택하세요.</div>;
+  if (!servo) return <div className="empty">Select a servo on the left.</div>;
 
   return (
     <div className="control">
-      <label><span>목표 각도</span><span>{target}°</span></label>
+      <label><span>Target angle</span><span>{target}°</span></label>
       <input type="range" min={0} max={180} step={1} value={target} onChange={(e) => setTarget(+e.target.value)} />
-      <label><span>속도</span><span>{speed.toFixed(2)}</span></label>
+      <label><span>Speed</span><span>{speed.toFixed(2)}</span></label>
       <input type="range" min={0.1} max={1} step={0.05} value={speed} onChange={(e) => setSpeed(+e.target.value)} />
       <div className="btns">
-        <button onClick={send} disabled={busy}>이동</button>
-        <button className="ghost" onClick={() => setTarget(90)}>센터(90°)</button>
-        <button className="ghost" onClick={() => setTarget(Math.round(servo.angle))}>현재값</button>
+        <button onClick={send} disabled={busy}>Move</button>
+        <button className="ghost" onClick={() => setTarget(90)}>Center (90°)</button>
+        <button className="ghost" onClick={() => setTarget(Math.round(servo.angle))}>Current</button>
       </div>
       <div className="toast">{msg}</div>
 
-      <h2 style={{ marginTop: 8 }}>최근 명령</h2>
+      <h2 style={{ marginTop: 8 }}>Recent Commands</h2>
       <div className="cmd-list">
         {commands.filter((c) => c.servo_id === servo.servo_id).slice(0, 8).map((c) => (
           <div key={c.id}>

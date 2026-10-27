@@ -67,24 +67,24 @@ export default function Page() {
       <div className="header">
         <div>
           <h1>Robot Arm Console</h1>
-          <div className="sub">서보 모터 원격 제어 · 실시간 위치 · 2차 함수 추세 분석</div>
+          <div className="sub">Remote servo control · Live position · Quadratic trend analysis</div>
         </div>
-        <div className="sub"><span className={"status-dot" + (live ? " live" : "")} />{live ? "Realtime 연결됨" : "연결 중…"}</div>
+        <div className="sub"><span className={"status-dot" + (live ? " live" : "")} />{live ? "Realtime connected" : "Connecting…"}</div>
       </div>
 
       <div className="grid">
         <div style={{ display: "grid", gap: 16, alignContent: "start" }}>
           <section className="panel">
-            <h2>모터 상태</h2>
+            <h2>Motor Status</h2>
             <ServoList servos={servos} selected={selected} onSelect={setSelected} />
           </section>
           <section className="panel">
-            <h2>원격 제어</h2>
+            <h2>Remote Control</h2>
             <ControlPanel servo={current} commands={commands} />
           </section>
         </div>
         <section className="panel">
-          <h2>데이터 분석</h2>
+          <h2>Data Analysis</h2>
           <ServoChart logs={logs} servoName={current?.name ?? "-"} minutes={minutes} onMinutes={setMinutes} />
         </section>
       </div>

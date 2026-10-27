@@ -45,7 +45,7 @@ export default function ServoChart({ logs, servoName, minutes, onMinutes }: Prop
         <div className="range">
           {(["angle", "current_ma", "temp_c"] as const).map((m) => (
             <button key={m} className={"ghost" + (metric === m ? " on" : "")} onClick={() => setMetric(m)}>
-              {m === "angle" ? "각도" : m === "current_ma" ? "전류" : "온도"}
+              {m === "angle" ? "Angle" : m === "current_ma" ? "Current" : "Temp"}
             </button>
           ))}
           <span style={{ width: 8 }} />
@@ -58,7 +58,7 @@ export default function ServoChart({ logs, servoName, minutes, onMinutes }: Prop
       </div>
 
       {points.length === 0 ? (
-        <div className="empty">선택한 구간에 데이터가 없습니다.</div>
+        <div className="empty">No data in the selected range.</div>
       ) : (
         <ResponsiveContainer width="100%" height={340}>
           <ComposedChart margin={{ top: 10, right: 20, bottom: 10, left: 0 }}>
@@ -66,15 +66,15 @@ export default function ServoChart({ logs, servoName, minutes, onMinutes }: Prop
             <XAxis
               dataKey="t" type="number" domain={["dataMin", "dataMax"]}
               tickFormatter={(v) => `${Math.round(v)}s`} stroke="#8b93a7" fontSize={12}
-              label={{ value: "경과 시간 (s)", position: "insideBottom", offset: -4, fill: "#8b93a7", fontSize: 12 }}
+              label={{ value: "Elapsed time (s)", position: "insideBottom", offset: -4, fill: "#8b93a7", fontSize: 12 }}
             />
             <YAxis stroke="#8b93a7" fontSize={12} tickFormatter={(v) => `${v}${unit.trim()}`} width={56} />
             <Tooltip
               contentStyle={{ background: "#171a21", border: "1px solid #262b36", borderRadius: 8, fontSize: 12 }}
-              formatter={(v: number, name) => [`${Number(v).toFixed(2)}${unit}`, name === "y" ? "측정값" : "2차 회귀"]}
+              formatter={(v: number, name) => [`${Number(v).toFixed(2)}${unit}`, name === "y" ? "Measured" : "Quadratic fit"]}
               labelFormatter={(v) => `${Number(v).toFixed(2)} s`}
             />
-            <Legend wrapperStyle={{ fontSize: 12 }} formatter={(v) => (v === "y" ? "측정값" : "2차 함수 추세선")} />
+            <Legend wrapperStyle={{ fontSize: 12 }} formatter={(v) => (v === "y" ? "Measured" : "Quadratic trend line")} />
             <Scatter data={points} dataKey="y" fill="#4f8cff" fillOpacity={0.8} />
             {curve.length > 0 && (
               <Line data={curve} dataKey="fit" type="monotone" stroke="#ff8a4f" strokeWidth={2.5} dot={false} isAnimationActive={false} />
@@ -86,8 +86,8 @@ export default function ServoChart({ logs, servoName, minutes, onMinutes }: Prop
 
       {fit && (
         <div className="eq">
-          <div><span>2차 회귀식 &nbsp;</span><span className="val">{formatEquation(fit)}</span></div>
-          <div><span>R² = </span>{fit.r2.toFixed(4)} &nbsp; <span>(1에 가까울수록 2차 함수에 잘 맞음)</span></div>
+          <div><span>Quadratic fit &nbsp;</span><span className="val">{formatEquation(fit)}</span></div>
+          <div><span>R² = </span>{fit.r2.toFixed(4)} &nbsp; <span>(closer to 1 = better quadratic fit)</span></div>
           <div>
             <span>a = </span>{fit.a.toExponential(3)} &nbsp;
             <span>b = </span>{fit.b.toFixed(4)} &nbsp;
@@ -95,7 +95,7 @@ export default function ServoChart({ logs, servoName, minutes, onMinutes }: Prop
           </div>
           {vtx && (
             <div>
-              <span>꼭짓점 ({vtx.isMax ? "최대" : "최소"}) &nbsp;</span>
+              <span>Vertex ({vtx.isMax ? "max" : "min"}) &nbsp;</span>
               t = {vtx.x.toFixed(2)} s, &nbsp;y = {vtx.y.toFixed(2)}{unit}
             </div>
           )}
